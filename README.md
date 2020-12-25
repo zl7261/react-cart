@@ -131,7 +131,7 @@ const onCheckedAllChange = newCheckedAll => {
   const { id } = cartItem
   const checked = checkedMap[id]
   return (
-      <ItemCard
+      <ItemCart
         key={id}
         cartItem={cartItem}
         checked={checked}
@@ -169,7 +169,7 @@ function areEqual(prevProps: Props, nextProps: Props) {
   )
 }
 
-const ItemCard: FC<Props> = React.memo(props => {
+const ItemCart: FC<Props> = React.memo(props => {
   const { checked, onCheckedChange } = props
   return (
     <div>
@@ -245,7 +245,7 @@ const ItemCard: FC<Props> = React.memo(props => {
   })
   
   return (
-    <ItemCard
+    <ItemCart
       key={id}
       cartItem={cartItem}
       checked={checked}
@@ -263,7 +263,7 @@ function areEqual(prevProps: Props, nextProps: Props) {
   )
 }
 
-const ItemCard: FC<Props> = React.memo(props => {
+const ItemCart: FC<Props> = React.memo(props => {
   const { checked, onCheckedChangeRef } = props
   return (
     <div>

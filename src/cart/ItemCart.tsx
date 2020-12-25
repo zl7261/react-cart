@@ -1,28 +1,33 @@
 import React from 'react'
-import {CartItem} from './'
 import {OnCheckedChange} from './UseChecked'
 import {Typography} from 'antd'
 import styled from 'styled-components'
 
+export interface CartItemInterface {
+    id: number
+    name: string
+    price: number
+}
+
 const isEqual = require('fast-deep-equal/es6')
 
 interface Props {
-    item: CartItem
+    item: CartItemInterface
     checked: boolean
-    onCheckedChange: OnCheckedChange<CartItem>
+    onCheckedChange: OnCheckedChange<CartItemInterface>
 }
 
 
-const CardItem = styled.div`
+const CartItem = styled.div`
     display: flex;
     width: 100%;
 `
 
-const CardCheckBox = styled.div`
+const CartCheckBox = styled.div`
     margin-right: 8px;
 `
 
-const CardInfo = styled.div`
+const CartInfo = styled.div`
     flex: 1;
     display: flex;
     justify-content: space-between;
@@ -33,27 +38,27 @@ const memoEqual = (prevProps: Props, nextProps: Props) => {
     return isEqual(prevProps, nextProps)
 }
 
-const ItemCard = React.memo((props: Props) => {
+const ItemCart = React.memo((props: Props) => {
     console.log('cart item rerender')
     const {item, checked, onCheckedChange} = props
     const {name, price} = item
 
 
     return (
-        <CardItem onClick={() => {
+        <CartItem onClick={() => {
             onCheckedChange(item, !checked)
         }}>
-            <CardCheckBox>
+            <CartCheckBox>
                 <input
                     type="checkbox"
                     checked={checked}
                 />
-            </CardCheckBox>
-            <CardInfo>
+            </CartCheckBox>
+            <CartInfo>
                 {name} <Typography.Text mark>¥ {price}</Typography.Text>
-            </CardInfo>
-        </CardItem>
+            </CartInfo>
+        </CartItem>
     )
 }, memoEqual)
 
-export default ItemCard
+export default ItemCart

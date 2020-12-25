@@ -1,14 +1,8 @@
 import React from 'react'
 import {Button, List, Typography} from 'antd'
-import ItemCard from './ItemCard'
+import ItemCart, {CartItemInterface} from './ItemCart'
 import {useChecked} from './UseChecked'
 import styled from 'styled-components'
-
-export interface CartItem {
-    id: number
-    name: string
-    price: number
-}
 
 const CartDiv = styled.div`
     max-width: 400px;
@@ -32,7 +26,7 @@ const HoverCartItem = styled(List.Item)`
 `
 
 // cartItems的积分总和
-const sumPrice = (cartItems: CartItem[]) => {
+const sumPrice = (cartItems: CartItemInterface[]) => {
     return cartItems.reduce((sum, cur) => sum + cur.price, 0)
 }
 
@@ -96,7 +90,7 @@ export default function Cart() {
                     const checked = checkedMap[item.id] || false
                     return (
                         <HoverCartItem>
-                            <ItemCard item={item}
+                            <ItemCart item={item}
                                       checked={checked}
                                       onCheckedChange={onCheckedChange}
                             />
