@@ -84,7 +84,7 @@ export const useChecked = <T extends Record<string, any>>(
 
                     const otherDataSource: CheckedMap = {}
                     dataSource.forEach(item => {
-                        otherDataSource[item.id] = !checkedCart.includes(item.id);
+                        otherDataSource[item.id] = !checkedCart.includes(item.id)
                     })
                     return otherDataSource
                 }

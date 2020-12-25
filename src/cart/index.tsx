@@ -1,8 +1,9 @@
 import React from 'react'
-import {Button, List, Typography} from 'antd'
-import ItemCart, {CartItemInterface} from './ItemCart'
+import {Button, Checkbox, List, Typography} from 'antd'
+import CartItem, {CartItemInterface} from './CartItem'
 import {useChecked} from './UseChecked'
 import styled from 'styled-components'
+import {CheckboxChangeEvent} from 'antd/es/checkbox'
 
 const CartDiv = styled.div`
     max-width: 400px;
@@ -15,9 +16,6 @@ const FooterDiv = styled.div`
 const CheckAllBox = styled.div`
     display: flex;
     align-items: center;
-`
-const CheckAllInput = styled.input`
-    margin-right: 8px;
 `
 const HoverCartItem = styled(List.Item)`
     &:hover{
@@ -48,7 +46,7 @@ export default function Cart() {
         onCheckedOtherChange
     } = useChecked(cartData)
 
-    const onWrapCheckedAllChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onWrapCheckedAllChange = (e: CheckboxChangeEvent) => {
         const checkAll = e.target.checked
         onCheckedAllChange(checkAll)
     }
@@ -57,24 +55,24 @@ export default function Cart() {
         onCheckedOtherChange()
     }
 
-
-    const total = sumPrice(filterChecked())
+    const checkedCart = filterChecked()
+    const total = sumPrice(checkedCart)
 
     const Footer = (
         <FooterDiv>
             <CheckAllBox>
-                <CheckAllInput
-                    checked={checkedAll}
-                    onChange={onWrapCheckedAllChange}
-                    type="checkbox"
-                />
-                全选
+                <Checkbox onChange={onWrapCheckedAllChange}
+                          checked={checkedAll}>
+                    全选
+                </Checkbox>
+                <Button
+                    disabled={checkedCart.length < 1}
+                    onClick={onWrapCheckedOtherChange}>
+                    反选
+                </Button>
             </CheckAllBox>
-            <Button onClick={onWrapCheckedOtherChange}>
-                反选
-            </Button>
             <div>
-                价格总计: <Typography.Text mark>¥ {total}</Typography.Text>
+                价格总计: <Typography.Text type={'warning'}>¥ {total}</Typography.Text>
             </div>
         </FooterDiv>
     )
@@ -90,7 +88,7 @@ export default function Cart() {
                     const checked = checkedMap[item.id] || false
                     return (
                         <HoverCartItem>
-                            <ItemCart item={item}
+                            <CartItem item={item}
                                       checked={checked}
                                       onCheckedChange={onCheckedChange}
                             />

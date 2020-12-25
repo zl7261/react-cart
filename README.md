@@ -66,11 +66,12 @@ const onCheckedChange: OnCheckedChange = (cartItem, checked) => {
 
 ### 计算勾选总价
 再用reduce来实现一个计算价格总和的函数
+
 ```js
   // cartItems的积分总和
- const sumPrice = (cartItems: CartItem[]) => {
+const sumPrice = (cartItems: CartItemDiv[]) => {
     return cartItems.reduce((sum, cur) => sum + cur.price, 0)
- }
+}
 ```
 
 那么此时就需要一个过滤出所有选中商品的函数
@@ -131,7 +132,7 @@ const onCheckedAllChange = newCheckedAll => {
   const { id } = cartItem
   const checked = checkedMap[id]
   return (
-      <ItemCart
+      <CartItem
         key={id}
         cartItem={cartItem}
         checked={checked}
@@ -169,7 +170,7 @@ function areEqual(prevProps: Props, nextProps: Props) {
   )
 }
 
-const ItemCart: FC<Props> = React.memo(props => {
+const CartItem: FC<Props> = React.memo(props => {
   const { checked, onCheckedChange } = props
   return (
     <div>
@@ -245,7 +246,7 @@ const ItemCart: FC<Props> = React.memo(props => {
   })
   
   return (
-    <ItemCart
+    <CartItem
       key={id}
       cartItem={cartItem}
       checked={checked}
@@ -263,7 +264,7 @@ function areEqual(prevProps: Props, nextProps: Props) {
   )
 }
 
-const ItemCart: FC<Props> = React.memo(props => {
+const CartItem: FC<Props> = React.memo(props => {
   const { checked, onCheckedChangeRef } = props
   return (
     <div>

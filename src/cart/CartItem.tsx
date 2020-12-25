@@ -1,6 +1,6 @@
 import React from 'react'
 import {OnCheckedChange} from './UseChecked'
-import {Typography} from 'antd'
+import {Checkbox, Typography} from 'antd'
 import styled from 'styled-components'
 
 export interface CartItemInterface {
@@ -18,19 +18,27 @@ interface Props {
 }
 
 
-const CartItem = styled.div`
+const CartItemDiv = styled.div`
     display: flex;
+    align-items:center;
+    justify-content: space-between;
     width: 100%;
 `
 
-const CartCheckBox = styled.div`
-    margin-right: 8px;
-`
 
-const CartInfo = styled.div`
+const CartPriceInfo = styled(Typography.Text)`
     flex: 1;
     display: flex;
     justify-content: space-between;
+`
+
+const CartCheck = styled.label`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .ant-checkbox{
+     margin-right: 8px;
+    }
 `
 
 // memo优化策略
@@ -38,27 +46,25 @@ const memoEqual = (prevProps: Props, nextProps: Props) => {
     return isEqual(prevProps, nextProps)
 }
 
-const ItemCart = React.memo((props: Props) => {
+const CartItem = React.memo((props: Props) => {
     console.log('cart item rerender')
     const {item, checked, onCheckedChange} = props
     const {name, price} = item
 
 
     return (
-        <CartItem onClick={() => {
+        <CartItemDiv onClick={() => {
             onCheckedChange(item, !checked)
         }}>
-            <CartCheckBox>
-                <input
-                    type="checkbox"
-                    checked={checked}
-                />
-            </CartCheckBox>
-            <CartInfo>
-                {name} <Typography.Text mark>¥ {price}</Typography.Text>
-            </CartInfo>
-        </CartItem>
+            <CartCheck>
+                <Checkbox checked={checked}/>
+                <CartPriceInfo>
+                    {name}
+                </CartPriceInfo>
+            </CartCheck>
+            <Typography.Text>¥ {price}</Typography.Text>
+        </CartItemDiv>
     )
 }, memoEqual)
 
-export default ItemCart
+export default CartItem
