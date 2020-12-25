@@ -14,6 +14,7 @@ const CHECKED_CHANGE = 'CHECKED_CHANGE'
 const CHECKED_ALL_CHANGE = 'CHECKED_ALL_CHANGE'
 
 const SET_CHECKED_MAP = 'SET_CHECKED_MAP'
+const CHECKED_OTHER_CHANGE = 'CHECKED_OTHER_CHANGE'
 
 type CheckedChange<T> = {
     type: typeof CHECKED_CHANGE
@@ -32,8 +33,12 @@ type SetCheckedMap = {
     type: typeof SET_CHECKED_MAP
     payload: CheckedMap
 }
+type CheckedOtherMap = {
+    type: typeof CHECKED_OTHER_CHANGE,
+    payload: any
+}
 
-type Action<T> = CheckedChange<T> | CheckedAllChange | SetCheckedMap
+type Action<T> = CheckedChange<T> | CheckedAllChange | SetCheckedMap | CheckedOtherMap
 export type OnCheckedChange<T> = (item: T, checked: boolean) => any
 
 /**
@@ -57,6 +62,7 @@ export const useChecked = <T extends Record<string, any>>(
                         [id]: checked
                     }
                 }
+
                 case CHECKED_ALL_CHANGE: {
                     const {payload: newCheckedAll} = action
                     const newCheckedMap: CheckedMap = {}
@@ -68,9 +74,21 @@ export const useChecked = <T extends Record<string, any>>(
                     }
                     return newCheckedMap
                 }
+
                 case SET_CHECKED_MAP: {
                     return action.payload
                 }
+
+                case CHECKED_OTHER_CHANGE: {
+                    const checkedCart = action.payload
+
+                    const otherDataSource: CheckedMap = {}
+                    dataSource.forEach(item => {
+                        otherDataSource[item.id] = !checkedCart.includes(item.id);
+                    })
+                    return otherDataSource
+                }
+
                 default:
                     return checkedMapParam
             }
@@ -114,13 +132,21 @@ export const useChecked = <T extends Record<string, any>>(
     const checkedAll =
         dataSource.length !== 0 && filterChecked().length === dataSource.length
 
-    /** 全选反选函数 */
+    /** 全选/全不选函数 */
     const onCheckedAllChange = (newCheckedAll: boolean) => {
         dispatch({
             type: CHECKED_ALL_CHANGE,
             payload: newCheckedAll
         })
     }
+    /* 反选*/
+    const onCheckedOtherChange = () => {
+        dispatch({
+            type: CHECKED_OTHER_CHANGE,
+            payload: filterChecked().map(item => item.id)
+        })
+    }
+
 
     // 数据更新的时候 如果勾选中的数据已经不在数据内了 就删除掉
     useEffect(() => {
@@ -146,6 +172,7 @@ export const useChecked = <T extends Record<string, any>>(
         onCheckedChange,
         filterChecked,
         onCheckedAllChange,
+        onCheckedOtherChange,
         checkedAll
     }
 }

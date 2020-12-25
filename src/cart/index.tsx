@@ -1,5 +1,5 @@
 import React from 'react'
-import {List, Typography} from 'antd'
+import {Button, List, Typography} from 'antd'
 import ItemCard from './ItemCard'
 import {useChecked} from './UseChecked'
 import styled from 'styled-components'
@@ -10,17 +10,9 @@ export interface CartItem {
     price: number
 }
 
-const cartData = Array(5)
-    .fill(undefined)
-    .map((v, i) => ({
-        id: i,
-        name: `商品${i}`,
-        price: Math.round(Math.random() * 100)
-    }))
-
 const CartDiv = styled.div`
     max-width: 400px;
-    margin: auto;
+    margin: auto; 
 `
 const FooterDiv = styled.div`
     display: flex;
@@ -33,11 +25,24 @@ const CheckAllBox = styled.div`
 const CheckAllInput = styled.input`
     margin-right: 8px;
 `
+const HoverCartItem = styled(List.Item)`
+    &:hover{
+        cursor:pointer
+    }
+`
 
 // cartItems的积分总和
 const sumPrice = (cartItems: CartItem[]) => {
     return cartItems.reduce((sum, cur) => sum + cur.price, 0)
 }
+
+const cartData = Array(5)
+    .fill(undefined)
+    .map((v, i) => ({
+        id: i,
+        name: `商品${i}`,
+        price: Math.round(Math.random() * 100)
+    }))
 
 export default function Cart() {
     const {
@@ -45,13 +50,19 @@ export default function Cart() {
         checkedMap,
         onCheckedAllChange,
         onCheckedChange,
-        filterChecked
+        filterChecked,
+        onCheckedOtherChange
     } = useChecked(cartData)
 
     const onWrapCheckedAllChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const checkAll = e.target.checked
         onCheckedAllChange(checkAll)
     }
+
+    const onWrapCheckedOtherChange = () => {
+        onCheckedOtherChange()
+    }
+
 
     const total = sumPrice(filterChecked())
 
@@ -65,6 +76,9 @@ export default function Cart() {
                 />
                 全选
             </CheckAllBox>
+            <Button onClick={onWrapCheckedOtherChange}>
+                反选
+            </Button>
             <div>
                 价格总计: <Typography.Text mark>¥ {total}</Typography.Text>
             </div>
@@ -81,9 +95,12 @@ export default function Cart() {
                 renderItem={item => {
                     const checked = checkedMap[item.id] || false
                     return (
-                        <List.Item>
-                            <ItemCard item={item} checked={checked} onCheckedChange={onCheckedChange}/>
-                        </List.Item>
+                        <HoverCartItem>
+                            <ItemCard item={item}
+                                      checked={checked}
+                                      onCheckedChange={onCheckedChange}
+                            />
+                        </HoverCartItem>
                     )
                 }}
             />
