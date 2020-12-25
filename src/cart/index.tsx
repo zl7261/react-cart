@@ -1,7 +1,7 @@
-import React from "react"
-import {List, Typography} from "antd"
-import ItemCard from "./ItemCard"
-import {useChecked} from "./UseChecked"
+import React from 'react'
+import {List, Typography} from 'antd'
+import ItemCard from './ItemCard'
+import {useChecked} from './UseChecked'
 import styled from 'styled-components'
 
 export interface CartItem {
@@ -15,7 +15,7 @@ const cartData = Array(5)
     .map((v, i) => ({
         id: i,
         name: `商品${i}`,
-        price: Math.round(Math.random() * 100),
+        price: Math.round(Math.random() * 100)
     }))
 
 const CartDiv = styled.div`
@@ -40,7 +40,7 @@ export default function Cart() {
         checkedMap,
         onCheckedAllChange,
         onCheckedChange,
-        filterChecked,
+        filterChecked
     } = useChecked(cartData)
 
     // cartItems的积分总和

@@ -1,8 +1,8 @@
-import React from "react"
-import {CartItem} from "./"
+import React from 'react'
+import {CartItem} from './'
 import {OnCheckedChange} from './UseChecked'
-import {Typography} from "antd"
-import styled from "styled-components";
+import {Typography} from 'antd'
+import styled from 'styled-components'
 
 interface Props {
     item: CartItem

@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useReducer} from "react"
+import {useCallback, useEffect, useReducer} from 'react'
 
 interface Option {
     /** 用来在map中记录勾选状态的key 一般取id */
@@ -9,11 +9,11 @@ type CheckedMap = {
     [key: string]: boolean
 }
 
-const CHECKED_CHANGE = "CHECKED_CHANGE"
+const CHECKED_CHANGE = 'CHECKED_CHANGE'
 
-const CHECKED_ALL_CHANGE = "CHECKED_ALL_CHANGE"
+const CHECKED_ALL_CHANGE = 'CHECKED_ALL_CHANGE'
 
-const SET_CHECKED_MAP = "SET_CHECKED_MAP"
+const SET_CHECKED_MAP = 'SET_CHECKED_MAP'
 
 type CheckedChange<T> = {
     type: typeof CHECKED_CHANGE
@@ -43,7 +43,7 @@ export type OnCheckedChange<T> = (item: T, checked: boolean) => any
  */
 export const useChecked = <T extends Record<string, any>>(
     dataSource: T[],
-    {key = "id"}: Option = {},
+    {key = 'id'}: Option = {}
 ) => {
     const [checkedMap, dispatch] = useReducer(
         (checkedMapParam: CheckedMap, action: Action<T>) => {
@@ -54,7 +54,7 @@ export const useChecked = <T extends Record<string, any>>(
                     const {[key]: id} = dataItem
                     return {
                         ...checkedMapParam,
-                        [id]: checked,
+                        [id]: checked
                     }
                 }
                 case CHECKED_ALL_CHANGE: {
@@ -75,7 +75,7 @@ export const useChecked = <T extends Record<string, any>>(
                     return checkedMapParam
             }
         },
-        {},
+        {}
     )
 
     /** 勾选状态变更 */
@@ -85,11 +85,11 @@ export const useChecked = <T extends Record<string, any>>(
                 type: CHECKED_CHANGE,
                 payload: {
                     dataItem,
-                    checked,
-                },
+                    checked
+                }
             })
         },
-        [],
+        []
     )
 
     type FilterCheckedFunc = (item: T) => boolean
@@ -100,7 +100,7 @@ export const useChecked = <T extends Record<string, any>>(
                 Object.entries(checkedMap)
                     .filter(entries => Boolean(entries[1]))
                     .map(([checkedId]) =>
-                        dataSource.find(({[key]: id}) => id === Number(checkedId)),
+                        dataSource.find(({[key]: id}) => id === Number(checkedId))
                     )
                     // 有可能勾选了以后直接删除 此时id虽然在checkedMap里 但是dataSource里已经没有这个数据了
                     // 先把空项过滤掉 保证外部传入的func拿到的不为undefined
@@ -108,7 +108,7 @@ export const useChecked = <T extends Record<string, any>>(
                     .filter(func as any) as T[]
             )
         },
-        [checkedMap, dataSource, key],
+        [checkedMap, dataSource, key]
     )
     /** 是否全选状态 */
     const checkedAll =
@@ -118,7 +118,7 @@ export const useChecked = <T extends Record<string, any>>(
     const onCheckedAllChange = (newCheckedAll: boolean) => {
         dispatch({
             type: CHECKED_ALL_CHANGE,
-            payload: newCheckedAll,
+            payload: newCheckedAll
         })
     }
 
@@ -133,7 +133,7 @@ export const useChecked = <T extends Record<string, any>>(
             if (changed) {
                 dispatch({
                     type: SET_CHECKED_MAP,
-                    payload: Object.assign({}, checkedMap),
+                    payload: Object.assign({}, checkedMap)
                 })
             }
         })
@@ -146,6 +146,6 @@ export const useChecked = <T extends Record<string, any>>(
         onCheckedChange,
         filterChecked,
         onCheckedAllChange,
-        checkedAll,
+        checkedAll
     }
 }
