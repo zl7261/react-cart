@@ -1,14 +1,18 @@
 import React from 'react';
 import Cart from './cart'
-import './App.css';
 import 'antd/dist/antd.css';
+import styled from "styled-components";
+
+const AppDiv = styled.div`
+    text-align: center;
+`
 
 function App() {
-  return (
-    <div className="App">
-      <Cart />
-    </div>
-  );
+    return (
+        <AppDiv>
+            <Cart/>
+        </AppDiv>
+    );
 }
 
 export default App;
