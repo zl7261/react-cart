@@ -1,6 +1,6 @@
 import React from "react"
 import {CartItem} from "./"
-import {OnCheckedChange} from './use-checked'
+import {OnCheckedChange} from './UseChecked'
 import {Typography} from "antd"
 import styled from "styled-components";
 
@@ -50,7 +50,7 @@ const ItemCard = React.memo((props: Props) => {
                 />
             </CardCheckBox>
             <CardInfo>
-                {name} <Typography.Text mark>${price}</Typography.Text>
+                {name} <Typography.Text mark>¥ {price}</Typography.Text>
             </CardInfo>
         </CardItem>
     )

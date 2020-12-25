@@ -1,7 +1,7 @@
 import React from "react"
 import {List, Typography} from "antd"
 import ItemCard from "./ItemCard"
-import {useChecked} from "./use-checked"
+import {useChecked} from "./UseChecked"
 import styled from 'styled-components'
 
 export interface CartItem {
@@ -66,7 +66,7 @@ export default function Cart() {
                 全选
             </CheckAllBox>
             <div>
-                价格总计 <Typography.Text mark>${total}</Typography.Text>
+                价格总计: {'   '}<Typography.Text mark>¥ {total}</Typography.Text>
             </div>
         </FooterDiv>
     )
