@@ -19,20 +19,25 @@ const cartData = Array(5)
     }))
 
 const CartDiv = styled.div`
-  max-width: 400px;
-  margin: auto;
+    max-width: 400px;
+    margin: auto;
 `
 const FooterDiv = styled.div`
-display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 `
 const CheckAllBox = styled.div`
-display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 `
 const CheckAllInput = styled.input`
-margin-right: 8px;
+    margin-right: 8px;
 `
+
+// cartItems的积分总和
+const sumPrice = (cartItems: CartItem[]) => {
+    return cartItems.reduce((sum, cur) => sum + cur.price, 0)
+}
 
 export default function Cart() {
     const {
@@ -42,11 +47,6 @@ export default function Cart() {
         onCheckedChange,
         filterChecked
     } = useChecked(cartData)
-
-    // cartItems的积分总和
-    const sumPrice = (cartItems: CartItem[]) => {
-        return cartItems.reduce((sum, cur) => sum + cur.price, 0)
-    }
 
     const onWrapCheckedAllChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const checkAll = e.target.checked
@@ -66,7 +66,7 @@ export default function Cart() {
                 全选
             </CheckAllBox>
             <div>
-                价格总计: {'   '}<Typography.Text mark>¥ {total}</Typography.Text>
+                价格总计: <Typography.Text mark>¥ {total}</Typography.Text>
             </div>
         </FooterDiv>
     )

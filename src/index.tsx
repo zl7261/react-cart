@@ -5,6 +5,7 @@ import 'antd/dist/antd.css'
 import styled from 'styled-components'
 
 const AppDiv = styled.div`
+    width:100%;
     text-align: center;
 `
 
