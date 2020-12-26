@@ -38,35 +38,35 @@ const cartData = Array(5)
 
 export default function Cart() {
     const {
-        checkedAll,
-        checkedMap,
-        onCheckedAllChange,
-        onCheckedChange,
-        filterChecked,
-        onCheckedOtherChange
+        selectedCart,
+        selectAllCartFlag,
+        onSelectedCart,
+        onSelectCart,
+        onSelectAllCart,
+        onReverseSelectCart
     } = useChecked(cartData)
 
     const onWrapCheckedAllChange = (e: CheckboxChangeEvent) => {
         const checkAll = e.target.checked
-        onCheckedAllChange(checkAll)
+        onSelectAllCart(checkAll)
     }
 
     const onWrapCheckedOtherChange = () => {
-        onCheckedOtherChange()
+        onReverseSelectCart()
     }
 
-    const checkedCart = filterChecked()
-    const total = sumPrice(checkedCart)
+    const selectedCartArr = onSelectedCart()
+    const total = sumPrice(selectedCartArr)
 
     const Footer = (
         <FooterDiv>
             <CheckAllBox>
                 <Checkbox onChange={onWrapCheckedAllChange}
-                          checked={checkedAll}>
+                          checked={selectAllCartFlag}>
                     全选
                 </Checkbox>
                 <Button
-                    disabled={checkedCart.length < 1}
+                    disabled={selectedCartArr.length < 1}
                     onClick={onWrapCheckedOtherChange}>
                     反选
                 </Button>
@@ -85,12 +85,12 @@ export default function Cart() {
                 bordered
                 dataSource={cartData}
                 renderItem={item => {
-                    const checked = checkedMap[item.id] || false
+                    const checked = selectedCart[item.id] || false
                     return (
                         <HoverCartItem>
                             <CartItem item={item}
                                       checked={checked}
-                                      onCheckedChange={onCheckedChange}
+                                      onSelectCart={onSelectCart}
                             />
                         </HoverCartItem>
                     )

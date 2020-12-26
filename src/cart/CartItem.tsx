@@ -1,5 +1,5 @@
 import React from 'react'
-import {OnCheckedChange} from './UseChecked'
+import {onSelectCart} from './UseChecked'
 import {Checkbox, Typography} from 'antd'
 import styled from 'styled-components'
 
@@ -14,7 +14,7 @@ const isEqual = require('fast-deep-equal/es6')
 interface Props {
     item: CartItemInterface
     checked: boolean
-    onCheckedChange: OnCheckedChange<CartItemInterface>
+    onSelectCart: onSelectCart<CartItemInterface>
 }
 
 
@@ -48,13 +48,13 @@ const memoEqual = (prevProps: Props, nextProps: Props) => {
 
 const CartItem = React.memo((props: Props) => {
     console.log('cart item rerender')
-    const {item, checked, onCheckedChange} = props
+    const {item, checked, onSelectCart} = props
     const {name, price} = item
 
 
     return (
         <CartItemDiv onClick={() => {
-            onCheckedChange(item, !checked)
+            onSelectCart(item, !checked)
         }}>
             <CartCheck>
                 <Checkbox checked={checked}/>

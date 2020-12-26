@@ -55,7 +55,7 @@ type CheckedMap = {
 }
 // 商品勾选
 const [checkedMap, setCheckedMap] = useState<CheckedMap>({})
-const onCheckedChange: OnCheckedChange = (cartItem, checked) => {
+const onSelectCart: onSelectCart = (cartItem, checked) => {
   const { id } = cartItem
   const newCheckedMap = Object.assign({}, checkedMap, {
     [id]: checked,
@@ -108,7 +108,7 @@ const checkedAll = cartData.length !== 0 && filterChecked().length === cartData.
 ```
 写出全选和反全选的函数：
 ```js
-const onCheckedAllChange = newCheckedAll => {
+const onSelectAllCart = newCheckedAll => {
   // 构造新的勾选map
   let newCheckedMap: CheckedMap = {}
   // 全选
@@ -136,7 +136,7 @@ const onCheckedAllChange = newCheckedAll => {
         key={id}
         cartItem={cartItem}
         checked={checked}
-        onCheckedChange={onCheckedChange}
+        onSelectCart={onSelectCart}
       />
   )
 })}
@@ -171,12 +171,12 @@ function areEqual(prevProps: Props, nextProps: Props) {
 }
 
 const CartItem: FC<Props> = React.memo(props => {
-  const { checked, onCheckedChange } = props
+  const { checked, onSelectCart } = props
   return (
     <div>
       <checkbox 
         value={checked} 
-        onChange={(value) => onCheckedChange(cartItem, value)} 
+        onChange={(value) => onSelectCart(cartItem, value)} 
       />
       <span>商品</span>
     </div>
@@ -204,9 +204,9 @@ const CartItem: FC<Props> = React.memo(props => {
 
 注意React的函数式组件，在每次渲染的时候都会重新执行，从而产生一个闭包环境。  
 
-所以第二个商品拿到的`onCheckedChange`还是前一次渲染购物车这个组件的函数闭包中的，那么`checkedMap`自然也是上一次函数闭包中的最初的空对象。
+所以第二个商品拿到的`onSelectCart`还是前一次渲染购物车这个组件的函数闭包中的，那么`checkedMap`自然也是上一次函数闭包中的最初的空对象。
 ```js
-  const onCheckedChange: OnCheckedChange = (cartItem, checked) => {
+  const onSelectCart: onSelectCart = (cartItem, checked) => {
     const { id } = cartItem
     // 注意，这里的checkedMap还是最初的空对象！！
     const newCheckedMap = Object.assign({}, checkedMap, {
@@ -239,10 +239,10 @@ const CartItem: FC<Props> = React.memo(props => {
 
 ```diff
   // 要把ref传给子组件 这样才能保证子组件能在不重新渲染的情况下拿到最新的函数引用
-  const onCheckedChangeRef = React.useRef(onCheckedChange)
+  const onSelectCartRef = React.useRef(onSelectCart)
   // 注意要在每次渲染后把ref中的引用指向当次渲染中最新的函数。
   useEffect(() => {
-    onCheckedChangeRef.current = onCheckedChange
+    onSelectCartRef.current = onSelectCart
   })
   
   return (
@@ -250,7 +250,7 @@ const CartItem: FC<Props> = React.memo(props => {
       key={id}
       cartItem={cartItem}
       checked={checked}
-+     onCheckedChangeRef={onCheckedChangeRef}
++     onSelectCartRef={onSelectCartRef}
     />
   )
 ```
@@ -265,12 +265,12 @@ function areEqual(prevProps: Props, nextProps: Props) {
 }
 
 const CartItem: FC<Props> = React.memo(props => {
-  const { checked, onCheckedChangeRef } = props
+  const { checked, onSelectCartRef } = props
   return (
     <div>
       <checkbox 
         value={checked} 
-        onChange={(value) => onCheckedChangeRef.current(cartItem, value)} 
+        onChange={(value) => onSelectCartRef.current(cartItem, value)} 
       />
       <span>商品</span>
     </div>
@@ -322,7 +322,7 @@ type SetCheckedMap = {
 }
 
 type Action<T> = CheckedChange<T> | CheckedAllChange | SetCheckedMap
-export type OnCheckedChange<T> = (item: T, checked: boolean) => any
+export type onSelectCart<T> = (item: T, checked: boolean) => any
 
 /**
  * 提供勾选、全选、反选等功能
@@ -367,7 +367,7 @@ export const useChecked = <T extends Record<string, any>>(
   )
 
   /** 勾选状态变更 */
-  const onCheckedChange: OnCheckedChange<T> = useCallback(
+  const onSelectCart: onSelectCart<T> = useCallback(
     (dataItem, checked) => {
       dispatch({
         type: CHECKED_CHANGE,
@@ -403,7 +403,7 @@ export const useChecked = <T extends Record<string, any>>(
     dataSource.length !== 0 && filterChecked().length === dataSource.length
 
   /** 全选反选函数 */
-  const onCheckedAllChange = (newCheckedAll: boolean) => {
+  const onSelectAllCart = (newCheckedAll: boolean) => {
     dispatch({
       type: CHECKED_ALL_CHANGE,
       payload: newCheckedAll,
@@ -431,9 +431,9 @@ export const useChecked = <T extends Record<string, any>>(
   return {
     checkedMap,
     dispatch,
-    onCheckedChange,
+    onSelectCart,
     filterChecked,
-    onCheckedAllChange,
+    onSelectAllCart,
     checkedAll,
   }
 }
@@ -444,8 +444,8 @@ export const useChecked = <T extends Record<string, any>>(
 const {
   checkedAll,
   checkedMap,
-  onCheckedAllChange,
-  onCheckedChange,
+  onSelectAllCart,
+  onSelectCart,
   filterChecked,
 } = useChecked(cartData)
 ```
