@@ -1,7 +1,6 @@
-import React from 'react'
-import {Button, Checkbox, List, Typography} from 'antd'
+import React, {useState} from 'react'
+import {Checkbox, List, Typography} from 'antd'
 import CartItem, {CartItemInterface} from './CartItem'
-import {useChecked} from './UseChecked'
 import styled from 'styled-components'
 import {CheckboxChangeEvent} from 'antd/es/checkbox'
 
@@ -28,48 +27,57 @@ const sumPrice = (cartItems: CartItemInterface[]) => {
     return cartItems.reduce((sum, cur) => sum + cur.price, 0)
 }
 
-const cartData = Array(5)
-    .fill(undefined)
-    .map((v, i) => ({
-        id: i,
-        name: `商品${i}`,
-        price: Math.round(Math.random() * 100)
-    }))
 
 export default function Cart() {
-    const {
-        selectedCart,
-        selectAllCartFlag,
-        onSelectedCart,
-        onSelectCart,
-        onSelectAllCart,
-        onReverseSelectCart
-    } = useChecked(cartData)
+    const [cartData] = useState(Array(5)
+        .fill(undefined)
+        .map((v, i) => ({
+            id: i,
+            name: `商品${i}`,
+            price: Math.round(Math.random() * 100)
+        }))
+    )
 
-    const onWrapCheckedAllChange = (e: CheckboxChangeEvent) => {
+    const [selectedCart, setSelectedCart] = useState([] as number[])
+
+
+    const onSelectAllCart = (e: CheckboxChangeEvent) => {
         const checkAll = e.target.checked
-        onSelectAllCart(checkAll)
+        if (checkAll) {
+            setSelectedCart(Array(cartData.length).fill(undefined).map((item, index) => index))
+        } else {
+            setSelectedCart([])
+        }
     }
 
-    const onWrapCheckedOtherChange = () => {
-        onReverseSelectCart()
-    }
+    const total = sumPrice(cartData.filter(item => selectedCart.includes(item.id)))
 
-    const selectedCartArr = onSelectedCart()
-    const total = sumPrice(selectedCartArr)
+
+    /** 是否全选状态 */
+    const selectAllCartFlag = Boolean(cartData.length) && (selectedCart.length === cartData.length)
+
+    const onCartSelected = (id: number, flag: boolean) => {
+
+        if (!flag) {
+            selectedCart.push(id)
+            setSelectedCart([...selectedCart])
+        } else {
+
+            console.log(id, flag, selectedCart)
+            const index = selectedCart.indexOf(id)
+            selectedCart.splice(index, 1)
+
+            setSelectedCart([...selectedCart])
+        }
+    }
 
     const Footer = (
         <FooterDiv>
             <CheckAllBox>
-                <Checkbox onChange={onWrapCheckedAllChange}
+                <Checkbox onChange={onSelectAllCart}
                           checked={selectAllCartFlag}>
                     全选
                 </Checkbox>
-                <Button
-                    disabled={selectedCartArr.length < 1}
-                    onClick={onWrapCheckedOtherChange}>
-                    反选
-                </Button>
             </CheckAllBox>
             <div>
                 价格总计: <Typography.Text type={'warning'}>¥ {total}</Typography.Text>
@@ -85,12 +93,13 @@ export default function Cart() {
                 bordered
                 dataSource={cartData}
                 renderItem={item => {
-                    const checked = selectedCart[item.id] || false
+                    const checked = selectedCart.includes(item.id)
+                    const cartSelected = onCartSelected.bind(null, item.id, checked)
                     return (
                         <HoverCartItem>
                             <CartItem item={item}
                                       checked={checked}
-                                      onSelectCart={onSelectCart}
+                                      onCartSelected={cartSelected}
                             />
                         </HoverCartItem>
                     )
