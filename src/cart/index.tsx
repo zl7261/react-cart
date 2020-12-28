@@ -59,8 +59,7 @@ export default function Cart() {
     const onCartSelected = useCallback((id: number, flag: boolean) => {
 
         if (!flag) {
-            selectedCart.push(id)
-            setSelectedCart([...selectedCart])
+            setSelectedCart([...selectedCart, id])
         } else {
             const index = selectedCart.indexOf(id)
             selectedCart.splice(index, 1)
