@@ -59,13 +59,16 @@ export default function Cart() {
     const onCartSelected = useCallback((id: number, flag: boolean) => {
 
         if (!flag) {
-            selectedCart.push(id)
-            setSelectedCart([...selectedCart])
+            setSelectedCart(arr => {
+                arr.push(id)
+                return [...arr]
+            })
         } else {
-            const index = selectedCart.indexOf(id)
-            selectedCart.splice(index, 1)
-
-            setSelectedCart([...selectedCart])
+            setSelectedCart(arr => {
+                const index = arr.indexOf(id)
+                arr.splice(index, 1)
+                return [...arr]
+            })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, selectedCart)
