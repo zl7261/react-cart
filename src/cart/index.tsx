@@ -64,11 +64,16 @@ export default function Cart() {
                 return [...arr]
             })
         } else {
-            setSelectedCart(arr => {
-                const index = arr.indexOf(id)
-                arr.splice(index, 1)
-                return [...arr]
-            })
+            // 错误的代码
+            const index = selectedCart.indexOf(id)
+            selectedCart.splice(index, 1)
+            setSelectedCart([...selectedCart])
+            //正常的代码
+            // setSelectedCart(arr => {
+            //     const index = arr.indexOf(id)
+            //     arr.splice(index, 1)
+            //     return [...arr]
+            // })
         }
     }
 
