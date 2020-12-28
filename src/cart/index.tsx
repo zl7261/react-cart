@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {Checkbox, List, Typography} from 'antd'
 import CartItem, {CartItemInterface} from './CartItem'
 import styled from 'styled-components'
@@ -56,20 +56,19 @@ export default function Cart() {
     /** 是否全选状态 */
     const selectAllCartFlag = Boolean(cartData.length) && (selectedCart.length === cartData.length)
 
-    const onCartSelected = (id: number, flag: boolean) => {
+    const onCartSelected = useCallback((id: number, flag: boolean) => {
 
         if (!flag) {
             selectedCart.push(id)
             setSelectedCart([...selectedCart])
         } else {
-
-            console.log(id, flag, selectedCart)
             const index = selectedCart.indexOf(id)
             selectedCart.splice(index, 1)
 
             setSelectedCart([...selectedCart])
         }
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, selectedCart)
 
     const Footer = (
         <FooterDiv>
@@ -94,12 +93,11 @@ export default function Cart() {
                 dataSource={cartData}
                 renderItem={item => {
                     const checked = selectedCart.includes(item.id)
-                    const cartSelected = onCartSelected.bind(null, item.id, checked)
                     return (
                         <HoverCartItem>
                             <CartItem item={item}
                                       checked={checked}
-                                      onCartSelected={cartSelected}
+                                      onCartSelected={onCartSelected.bind(null, item.id, checked)}
                             />
                         </HoverCartItem>
                     )
