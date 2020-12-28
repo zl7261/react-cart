@@ -9,7 +9,7 @@ const AppDiv = styled.div`
     text-align: center;
 `
 
-function App() {
+export default function App() {
     return (
         <AppDiv>
             <Cart/>
