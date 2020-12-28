@@ -1,5 +1,4 @@
 import React from 'react'
-import {onSelectCart} from './UseChecked'
 import {Checkbox, Typography} from 'antd'
 import styled from 'styled-components'
 
@@ -14,7 +13,7 @@ const isEqual = require('fast-deep-equal/es6')
 interface Props {
     item: CartItemInterface
     checked: boolean
-    onSelectCart: onSelectCart<CartItemInterface>
+    onSelectCart: any
 }
 
 
@@ -43,7 +42,7 @@ const CartCheck = styled.label`
 
 // memo优化策略
 const memoEqual = (prevProps: Props, nextProps: Props) => {
-    return isEqual(prevProps, nextProps)
+    return isEqual(prevProps.checked, nextProps.checked)
 }
 
 const CartItem = React.memo((props: Props) => {
