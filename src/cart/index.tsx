@@ -56,7 +56,7 @@ export default function Cart() {
     /** 是否全选状态 */
     const selectAllCartFlag = Boolean(cartData.length) && (selectedCart.length === cartData.length)
 
-    const onCartSelected = useCallback((id: number, flag: boolean) => {
+    const onCartSelected = (id: number, flag: boolean) => {
 
         if (!flag) {
             setSelectedCart(arr => {
@@ -70,8 +70,7 @@ export default function Cart() {
                 return [...arr]
             })
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, selectedCart)
+    }
 
     const Footer = (
         <FooterDiv>
