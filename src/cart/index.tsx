@@ -33,14 +33,15 @@ const sumPrice = (cartItems: CartItemInterface[]) => {
 export default function Cart() {
 
 
-    const [cartData] = useState(Array(5)
-        .fill(undefined)
-        .map((v, i) => ({
-            id: i,
-            name: `商品${i}`,
-            price: Math.round(Math.random() * 100)
-        }))
-    )
+    const [cartData] = useState(() => {
+        return Array(5)
+            .fill(undefined)
+            .map((v, i) => ({
+                id: i,
+                name: `商品${i}`,
+                price: Math.round(Math.random() * 100)
+            }))
+    })
 
     const [selectedCart, setSelectedCart] = useState([] as number[])
 
@@ -99,7 +100,7 @@ export default function Cart() {
         <ReactContext.Provider value={{length}}>
             <CartDiv>
 
-                <div style={{border: '1px solid red',padding:'20px', margin: '50px auto', textAlign: 'center'}}>
+                <div style={{border: '1px solid red', padding: '20px', margin: '50px auto', textAlign: 'center'}}>
                     <p>parent context:{length}</p>
                     <Son/>
                 </div>
