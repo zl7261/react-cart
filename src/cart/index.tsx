@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import {CheckboxChangeEvent} from 'antd/es/checkbox'
 import {ReactContext} from '../utils/context'
 import Son from './Son'
+import ReactPortal from './ReactPortal'
 
 const CartDiv = styled.div`
     max-width: 400px;
@@ -97,6 +98,7 @@ export default function Cart() {
 
     return (
         <ReactContext.Provider value={{length}}>
+            <ReactPortal/>
             <CartDiv>
 
                 <div style={{border: '1px solid red',padding:'20px', margin: '50px auto', textAlign: 'center'}}>
