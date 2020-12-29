@@ -10,8 +10,7 @@ export interface CartItemInterface {
 
 interface Props {
     item: CartItemInterface
-    checked: boolean,
-    onCartSelected: (id: number, checked: boolean) => void
+    checked: boolean
 }
 
 
@@ -23,13 +22,13 @@ const CartItemDiv = styled.div`
 `
 
 
-const CartPriceInfo = styled(Typography.Text)`
+const CartPriceInfo = styled.div`
     flex: 1;
     display: flex;
     justify-content: space-between;
 `
 
-const CartCheck = styled.label`
+const CartCheck = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,23 +37,16 @@ const CartCheck = styled.label`
     }
 `
 
-// memo优化策略
-const memoEqual = (prevProps: Props, nextProps: Props) => {
-    // 校验props与子组件回调父组件的函数有无被修改
-    return prevProps.checked === nextProps.checked
-}
 
 const CartItem = React.memo((props: Props) => {
     console.log('CartItem Render')
 
-    const {item, checked, onCartSelected} = props
+    const {item, checked} = props
     const {name, price} = item
 
 
     return (
-        <CartItemDiv onClick={() => {
-            onCartSelected(item.id, checked)
-        }}>
+        <CartItemDiv>
             <CartCheck>
                 <Checkbox checked={checked}/>
                 <CartPriceInfo>
@@ -64,6 +56,6 @@ const CartItem = React.memo((props: Props) => {
             <Typography.Text>¥ {price}</Typography.Text>
         </CartItemDiv>
     )
-}, memoEqual)
+})
 
 export default CartItem
