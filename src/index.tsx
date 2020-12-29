@@ -1,19 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Cart from './cart'
+import Router from './router'
 import 'antd/dist/antd.css'
-import styled from 'styled-components'
-
-const AppDiv = styled.div`
-    width:100%;
-    text-align: center;
-`
 
 export default function App() {
     return (
-        <AppDiv>
-            <Cart/>
-        </AppDiv>
+        <Router/>
     )
 }
 

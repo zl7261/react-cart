@@ -2,7 +2,7 @@ import React, {ReactComponentElement, useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
 import {Button} from 'antd'
 
-const modalRoot = document.body
+const modalRoot = document.querySelector('#app')!
 const el = document.createElement('div')
 el.style.width = '300px'
 el.style.height = '100px'
