@@ -22,13 +22,13 @@ export default function AuthExample() {
 
                     <Switch>
                         <Route path="/public">
-                            <ReactPortal/>
+                            <Cart/>
                         </Route>
                         <Route path="/login">
                             <LoginPage/>
                         </Route>
                         <PrivateRoute path="/protected">
-                            <Cart/>
+                            <ReactPortal/>
                         </PrivateRoute>
                     </Switch>
                 </div>
