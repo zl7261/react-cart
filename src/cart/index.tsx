@@ -3,6 +3,8 @@ import {Checkbox, List, Typography} from 'antd'
 import CartItem, {CartItemInterface} from './CartItem'
 import styled from 'styled-components'
 import {CheckboxChangeEvent} from 'antd/es/checkbox'
+import {ReactContext} from '../utils/context'
+import Son from './Son'
 
 const CartDiv = styled.div`
     max-width: 400px;
@@ -29,6 +31,8 @@ const sumPrice = (cartItems: CartItemInterface[]) => {
 
 
 export default function Cart() {
+
+
     const [cartData] = useState(Array(5)
         .fill(undefined)
         .map((v, i) => ({
@@ -40,6 +44,7 @@ export default function Cart() {
 
     const [selectedCart, setSelectedCart] = useState([] as number[])
 
+    const [length, setLength] = useState(0)
 
     const onSelectAllCart = (e: CheckboxChangeEvent) => {
         const checkAll = e.target.checked
@@ -61,12 +66,16 @@ export default function Cart() {
         if (!flag) {
             setSelectedCart(arr => {
                 arr.push(id)
+                setLength(arr.length)
+
                 return [...arr]
             })
         } else {
             setSelectedCart(arr => {
                 const index = arr.indexOf(id)
                 arr.splice(index, 1)
+
+                setLength(arr.length)
                 return [...arr]
             })
         }
@@ -87,25 +96,33 @@ export default function Cart() {
     )
 
     return (
-        <CartDiv>
-            <List
-                header={<div>购物车</div>}
-                footer={Footer}
-                bordered
-                dataSource={cartData}
-                renderItem={item => {
-                    let checked = selectedCart.includes(item.id)
-                    return (
-                        <HoverCartItem onClick={() => {
-                            onCartSelected(item.id, checked)
-                        }}>
-                            <CartItem item={item}
-                                      checked={checked}
-                            />
-                        </HoverCartItem>
-                    )
-                }}
-            />
-        </CartDiv>
+        <ReactContext.Provider value={{length}}>
+            <CartDiv>
+
+                <div style={{border: '1px solid red',padding:'20px', margin: '50px auto', textAlign: 'center'}}>
+                    <p>parent context:{length}</p>
+                    <Son/>
+                </div>
+                <List
+                    header={<div>购物车</div>}
+                    footer={Footer}
+                    bordered
+                    dataSource={cartData}
+                    renderItem={item => {
+                        let checked = selectedCart.includes(item.id)
+                        return (
+                            <HoverCartItem onClick={() => {
+                                onCartSelected(item.id, checked)
+                            }}>
+                                <CartItem item={item}
+                                          checked={checked}
+                                />
+                            </HoverCartItem>
+                        )
+                    }}
+                />
+            </CartDiv>
+
+        </ReactContext.Provider>
     )
 }
