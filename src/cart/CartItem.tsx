@@ -15,26 +15,27 @@ interface Props {
 
 
 const CartItemDiv = styled.div`
-    display: flex;
-    align-items:center;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 `
 
 
 const CartPriceInfo = styled.div`
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
 `
 
 const CartCheck = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .ant-checkbox{
-     margin-right: 8px;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .ant-checkbox {
+    margin-right: 8px;
+  }
 `
 
 

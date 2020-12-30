@@ -12,7 +12,7 @@ el.style.top = '25px'
 el.style.left = '350px'
 
 const Modal = (props: { children: ReactComponentElement<any> }) => {
-console.log('render')
+    console.log('render')
     useEffect(() => {
         modalRoot.appendChild(el)
 
